@@ -16,7 +16,12 @@ app = Flask(__name__)
 def hello_world():
     return "Hello World!"
 
-@app.route("create_account")
+@app.route("/sign_in")
+def sign_in():
+    # signs the user in 
+    return "sign in"
+
+@app.route("/create_account")
 def create_wallet_account(user_info):
     user_info = request.get_json()
     # encode with JWT, should return an id
