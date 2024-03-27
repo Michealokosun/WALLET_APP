@@ -1,59 +1,49 @@
+
 #!/usr/bin/env python
 
-"""
-flask app for api calls
-"""
+"""Contains the flask app"""
 
-from datetime import timedelta
-from flask import Flask, Blueprint, jsonify
-from flask_cors import CORS
-from models import storage
-from api.views import app_views
-from flask_login import LoginManager
-from os import getenv
-from models import storage
-from models.user import User
 
+from models import *
+from flask import request
+#from .models import URLData, TextData, ContactData, QRCode
+
+from flask import Flask
 
 app = Flask(__name__)
-app.secret_key = getenv('APP_SECRET_KEY') 
-app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=1)
-app.register_blueprint(app_views)
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+@app.route('/')
+def hello_world():
+    return "Hello World!"
 
-@login_manager.user_loader
-def load_user(user_id):
-    return storage.get(User, id=user_id)
+@app.route("/sign_in")
+def sign_in():
+    # signs the user in 
+    return "sign in"
 
-@login_manager.unauthorized_handler
-def unauthorized():
-    """unauthorized 401 error handler"""
-    return jsonify({"Error": "Unauthorized"}), 401
+@app.route("/create_account")
+def create_wallet_account(user_info):
+    user_info = request.get_json()
+    # encode with JWT, should return an id
 
-@app.errorhandler(404)
-def not_found(error):
-    """custom 404 error message"""
-    return jsonify({"Error": "The requested resource could not be found"}), 404
+@app.route('/deposit')
+def deposit_funds(amount,user_id):
+    amount = request.get_json()['amount']
+    #locate user wallet and add funds should return a successful or failed message and current balance
 
-@app.errorhandler(401)
-def unauthorized(error):
-    """custom 401 error message"""
-    return jsonify({"Error": "You are not authorized to access this resource"}), 401
+@app.route('/withdraw')
+def withdraw_funds(amount,user_id):
+    amount = request.get_json()['amount']
+    #locate user wallet and subtract funds should return a successful or failed message and current balance
 
+@app.route('/transfer')
+def transfer_funds(amount,user_id,receiving_wallet_id):
+    amount = request.get_json()['amount']
+    #locate user wallet and subtract funds should return a successful or failed message and current balance
+@app.route('/get_balance')
+def get_balance(user_id):
+    #verify user existence and return balance
+    return "balance"
 
-
-@app.route('/', methods=['GET'])
-def home():
-    """home route"""
-    return jsonify({"message": "Welcome to the Authors Haven API"})
-
-def index():
-    """index route"""
-    return jsonify({"message": "Welcome to the WALLET_APP API"})
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3001)
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=3001, debug=True)
