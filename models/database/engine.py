@@ -2,7 +2,7 @@
 """
 sqlalchemy module for communication with postgres
 """
-# export DB_NAME="MY_WALLET_APP" DB_USER="postgres" DB_PASSWORD="Chuks123."
+# export DB_NAME="WALLET_APP" DB_USER="postgres" DB_PASSWORD="Chuks123."
 
 
 from sqlalchemy import create_engine

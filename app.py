@@ -1,12 +1,12 @@
-
 #!/usr/bin/env python
-
 """Contains the flask app"""
 
 
-from models import *
-from flask import request
-#from .models import URLData, TextData, ContactData, QRCode
+from models import storage
+from flask import request, jsonify, abort
+from models.user import User
+from models.transaction import Transaction
+from models.wallet import Wallet
 
 from flask import Flask
 
@@ -15,6 +15,15 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     return "Hello World!"
+
+@app.route("/users")
+def get_users():
+    users = storage.get_all(User)
+    if users:
+        return jsonify({user.to_dict() for user in users})
+    abort(404)
+
+
 
 @app.route("/sign_in")
 def sign_in():

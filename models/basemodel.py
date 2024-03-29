@@ -36,6 +36,10 @@ class BaseModel:
                 else:
                     setattr(self, time, datetime.utcnow())
 
+    def save(self):
+        "saves to database"
+        pass
+
     def to_dict(self):
         """Returns a dictionary representation of an obj"""
         obj = {}

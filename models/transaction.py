@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-#!/usr/bin/env python
-
 """the transaction module"""
 
 from models.basemodel import Base, BaseModel
