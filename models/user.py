@@ -19,8 +19,6 @@ class User(BaseModel, Base):
     email = Column(String(255), nullable=False, unique=True)
     address = Column(String(255), nullable=True)
     password = Column(LargeBinary, nullable=False)
-    wallet_id = Column(String(255), ForeignKey("users.id"), nullable=True)
-
     wallet = relationship("Wallet", backref="user", cascade="all, delete, delete-orphan")
 
 
@@ -40,3 +38,16 @@ class User(BaseModel, Base):
     def check_password(self, password):
         """Check the password during login"""
         return bcrypt.checkpw(password.encode('utf8'), self.password)
+    
+    def to_dict(self):
+        user_dict = {
+            'id': self.id,
+            'surname': self.surname,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'email': self.email,
+            'address': self.address,
+            # Serialize relevant wallet information
+            'wallets': [{'id': wallet.id, 'wallet_type': wallet.wallet_type} for wallet in self.wallet]
+        }
+        return user_dict

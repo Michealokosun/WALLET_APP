@@ -2,7 +2,7 @@
 """
 sqlalchemy module for communication with postgres
 """
-# export DB_NAME="WALLET_APP" DB_USER="postgres" DB_PASSWORD="Chuks123."
+# export DB_NAME="MY_WALLET_APP" DB_USER="postgres" DB_PASSWORD="Chuks123."
 
 
 from sqlalchemy import create_engine
@@ -12,8 +12,9 @@ import psycopg2
 from models.user import User
 from models.wallet import Wallet
 from models.basemodel import Base
+from models.transaction import Transaction
 
-TABLES = [User, Wallet]
+TABLES = [User, Wallet, Transaction]
 
 class Database:
 
@@ -46,16 +47,19 @@ class Database:
         """Save/commit all changes of the current db session"""
         self.__session.commit()
 
-    def get_all(self, cls, user_id=None):
+    def get_all(self, cls, user_id=None, wallet_id=None):
         """
         query-> SELECT * FROM cls.__tablename__
         [Returns a dictionary (key:obj) object for easy indexing]
         """
         objs_dict = {}
-        if user_id == None:
+        if user_id == None and wallet_id == None:
             objs = self.__session.query(cls).all()
             return objs
-        objs = self.__session.query(cls).filter(cls.user_id == user_id).all()
+        elif user_id is not None:
+            objs = self.__session.query(cls).filter(cls.user_id == user_id).all()
+        else:
+            objs = self.__session.query(cls).filter(cls.wallet_id == wallet_id).all()
         return objs
 
     def delete(self, obj=None):
