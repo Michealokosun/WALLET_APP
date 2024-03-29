@@ -38,7 +38,9 @@ class BaseModel:
 
     def save(self):
         "saves to database"
-        pass
+        self.updated_at = datetime.utcnow()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary representation of an obj"""
