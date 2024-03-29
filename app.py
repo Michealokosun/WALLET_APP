@@ -26,6 +26,12 @@ def get_users():
 
 
 @app.route("/sign_in")
+def sign_up():
+    # Create a user account and wallet account from the user class
+    user = User(**request.get_json())
+    user.save()
+    return "User account created "
+
 def sign_in():
     # signs the user in 
     return "sign in"
