@@ -59,4 +59,8 @@ class Wallet(BaseModel, Base):
                                                         final_balance = recipient_wallet.balance)
         recipient_wallet_transaction.save()
         return self.balance, recipient_wallet.balance
-    
+        reciepient_wallet_transaction = Transaction(type='deposit', wallet_id = reciepient_wallet.id,
+                                                    initial_balance = reciepient_wallet.balance - amount, final_balance = reciepient_wallet.balance)
+        reciepient_wallet_transaction.save()
+        return self.balance, reciepient_wallet.balance
+
