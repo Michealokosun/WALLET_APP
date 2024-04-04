@@ -25,7 +25,10 @@ class Wallet(BaseModel, Base):
             self.balance = 0
 
     def deposit(self, amount):
+        
         transaction = Transaction(type='deposit', wallet_id = self.id, initial_balance = self.balance)
+        if amount > 100000:
+            raise ValueError ("Too much money bro share naa!!!!, EFCC is coming for you")
         self.balance += amount
         transaction.final_balance = self.balance
         transaction.save()
@@ -56,5 +59,5 @@ class Wallet(BaseModel, Base):
             reciepient_wallet_transaction = Transaction(type='deposit', wallet_id = reciepient_wallet.id,
                                                         initial_balance = reciepient_wallet.balance - amount, final_balance = reciepient_wallet.balance)
             reciepient_wallet_transaction.save()
-            return self.balance, reciepient_wallet.balance
+            return self.balance, reciepient_wallet
     

@@ -119,7 +119,7 @@ def delete_user(user_id):
 
 
 @app_views.route('/login', methods=['POST'])
-@token_required
+# @token_required
 def login():
     # Get the user object based on credentials
     data = request.get_json(silent=True)
@@ -132,7 +132,7 @@ def login():
         return abort(401, {"error": "Invalid password"})
     token  = create_jwt_token(user.id)
     response = jsonify({"token": token, "user": user.to_dict()})
-    response.headers['Authorizatio'] = f"Bearer {token}"
+    response.headers['Authorization'] = f"Bearer {token}"
     return response, 200
         
 @app_views.route('/logout', methods=['GET'])
