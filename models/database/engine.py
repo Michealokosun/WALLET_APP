@@ -34,7 +34,7 @@ class Database:
             self.__session.close()
 
     def reload(self):
-        """(Re)load data from postres database"""
+        """(Re)load data from postgres database"""
         Base.metadata.create_all(self.__engine)
         factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(factory)

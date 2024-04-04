@@ -19,6 +19,9 @@ app.register_blueprint(app_views)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
+@app.route('/')
+def hello_world():
+    return "Hello World!"
 
 @app.errorhandler(404)
 def not_found(error):
@@ -36,9 +39,6 @@ def home():
     """home route"""
     return jsonify({"message": "Welcome to the MY WALLET API"})
 
-def index():
-    """index route"""
-    return jsonify({"message": "Welcome to the WALLET_APP API"})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3001)
