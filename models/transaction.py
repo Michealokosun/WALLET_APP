@@ -14,4 +14,3 @@ class Transaction(BaseModel, Base):
     wallet_id = Column(String, ForeignKey('wallets.id'))
     initial_balance = Column(Integer, nullable=False)
     final_balance = Column(Integer)
-    
