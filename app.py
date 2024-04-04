@@ -1,58 +1,44 @@
 #!/usr/bin/env python
-"""Contains the flask app"""
 
+"""
+flask app for api calls
+"""
 
+from datetime import timedelta
+from flask import Flask, Blueprint, jsonify
+from flask_cors import CORS
 from models import storage
-from flask import request, jsonify, abort
+from api.views import app_views
+from os import getenv
+from models import storage
 from models.user import User
-from models.transaction import Transaction
-from models.wallet import Wallet
 
-from flask import Flask
 
 app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return "Hello World!"
-
-@app.route("/users")
-def get_users():
-    users = storage.get_all(User)
-    if users:
-        return jsonify({user.to_dict() for user in users})
-    abort(404)
+app.register_blueprint(app_views)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 
+@app.errorhandler(404)
+def not_found(error):
+    """custom 404 error message"""
+    return jsonify({"Error": "The requested resource could not be found"}), 404
 
-@app.route("/sign_in")
-def sign_in():
-    # signs the user in 
-    return "sign in"
+@app.errorhandler(401)
+def unauthorized(error):
+    """custom 401 error message"""
+    return jsonify({"Error": "You are not authorized to access this resource"}), 401
 
-@app.route("/create_account")
-def create_wallet_account(user_info):
-    user_info = request.get_json()
-    # encode with JWT, should return an id
 
-@app.route('/deposit')
-def deposit_funds(amount,user_id):
-    amount = request.get_json()['amount']
-    #locate user wallet and add funds should return a successful or failed message and current balance
+@app.route('/', methods=['GET'])
+def home():
+    """home route"""
+    return jsonify({"message": "Welcome to the MY WALLET API"})
 
-@app.route('/withdraw')
-def withdraw_funds(amount,user_id):
-    amount = request.get_json()['amount']
-    #locate user wallet and subtract funds should return a successful or failed message and current balance
+def index():
+    """index route"""
+    return jsonify({"message": "Welcome to the WALLET_APP API"})
 
-@app.route('/transfer')
-def transfer_funds(amount,user_id,receiving_wallet_id):
-    amount = request.get_json()['amount']
-    #locate user wallet and subtract funds should return a successful or failed message and current balance
-@app.route('/get_balance')
-def get_balance(user_id):
-    #verify user existence and return balance
-    return "balance"
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=3001, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=3001)

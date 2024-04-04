@@ -35,13 +35,12 @@ class BaseModel:
                     pass
                 else:
                     setattr(self, time, datetime.utcnow())
-
     def save(self):
-        "saves to database"
+        """Create and save `obj` to storage"""
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
         models.storage.save()
-
+    
     def to_dict(self):
         """Returns a dictionary representation of an obj"""
         obj = {}

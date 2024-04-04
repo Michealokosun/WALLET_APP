@@ -5,3 +5,4 @@ psycopg2
 pydantic
 flask_cors
 bcrypt
+flask_login
