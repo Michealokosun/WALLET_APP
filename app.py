@@ -73,6 +73,7 @@ def sign_in():
     data = request.get_json()
     user_email = storage.get(User, email=data["email"])
     user_password = storage.get(User, email=data["password"])
+    if user_email :
     # if user:
     #     return "User already exists"
     # else:
