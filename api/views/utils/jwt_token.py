@@ -5,7 +5,7 @@ my_secrete = "my super secrete"
 
 def create_jwt_token(user_id: int) -> str:
     payload = {
-		'exp': datetime.utcnow() + timedelta(days=1),
+		'exp': datetime.now() + timedelta(days=1),
 		'iat': datetime.utcnow(),
 		'sub': user_id
 	}

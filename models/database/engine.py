@@ -20,14 +20,15 @@ class Database:
 
     __session = None
     __engine = None
+  # postgres://postgres.xgmksjrwlvqpebwoxhjm:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 
     def __init__(self):
         try:
-            DB_NAME = getenv('DB_NAME')
-            DB_USER = getenv('DB_USER')
-            DB_PASSWORD = getenv('DB_PASSWORD')
+            # DB_NAME = getenv('DB_NAME')
+            # DB_USER = getenv('DB_USER')
+            # DB_PASSWORD = getenv('DB_PASSWORD')
 
-            self.__engine = create_engine(f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost/{DB_NAME}')
+            self.__engine = create_engine("postgresql://postgres.xgmksjrwlvqpebwoxhjm:Michealoko1224.@aws-0-us-east-1.pooler.supabase.com:5432/postgres")
             print(f"Connected to {getenv('DB_NAME')} database")
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
